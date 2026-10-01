@@ -1,2 +1,0 @@
-[2026-10-01 13:14:42] Watching D:\Downloads\Study Pipeline\inbox …  (Ctrl+C to stop)
-[2026-10-01 13:19:16] Watcher stopped.

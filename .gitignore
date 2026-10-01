@@ -1,0 +1,21 @@
+# Virtual environment
+.venv/
+
+# Python cache files
+__pycache__/
+*.py[cod]
+
+# Runtime log
+/conversion_log.txt
+
+# User notes and generated documents
+/inbox/*
+!/inbox/.gitkeep
+/outbox/*
+!/outbox/.gitkeep
+/done/*
+!/done/.gitkeep
+
+# Windows and macOS metadata
+Thumbs.db
+.DS_Store

@@ -216,14 +216,28 @@ def log(msg):
     print(f"[{stamp}] {msg}")
 
 
+def destination_paths(md_path: Path):
+    index = 0
+    while True:
+        name_suffix = f" ({index})" if index else ""
+        output_path = OUTBOX / f"{md_path.stem}{name_suffix}.docx"
+        archive_dir = DONE if index == 0 else DONE / f"{md_path.stem}{name_suffix}"
+        archive_path = archive_dir / md_path.name
+        if output_path.exists() or archive_path.exists() or (index and archive_dir.exists()):
+            index += 1
+            continue
+        return output_path, archive_path
+
+
 def convert(md_path: Path):
     try:
         text = md_path.read_text(encoding="utf-8")
         title = title_from_md(text, md_path.stem.replace("_", " ").title())
-        out_path = OUTBOX / (md_path.stem + ".docx")
+        out_path, archive_path = destination_paths(md_path)
         build_docx(text, out_path, title=title)
-        shutil.move(str(md_path), str(DONE / md_path.name))
-        log(f"✔ {md_path.name} → {out_path.name}")
+        archive_path.parent.mkdir(exist_ok=True)
+        shutil.move(str(md_path), str(archive_path))
+        log(f"✔ {md_path.name} → {out_path.name} (archived as {archive_path.relative_to(DONE)})")
     except Exception as e:
         log(f"✘ FAILED {md_path.name}: {e}")
 
